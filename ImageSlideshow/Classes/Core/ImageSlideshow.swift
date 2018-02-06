@@ -49,7 +49,7 @@ open class ImageSlideshow: UIView {
     open let scrollView = UIScrollView()
 
     /// Page Control shown in the slideshow
-    open let pageControl = UIPageControl()
+    let pageControl = SlidingPageControl()
 
     /// Activity indicator shown when loading image
     open var activityIndicator: ActivityIndicatorFactory? {
@@ -73,6 +73,24 @@ open class ImageSlideshow: UIView {
             if oldValue != currentPage {
                 currentPageChanged?(currentPage)
             }
+        }
+    }
+
+    public var currentPageIndicatorTintColor: UIColor? {
+        get {
+            return pageControl.currentPageIndicatorTintColor
+        }
+        set(value) {
+            pageControl.currentPageIndicatorTintColor = value
+        }
+    }
+
+    public var pageIndicatorTintColor: UIColor? {
+        get {
+            return pageControl.pageIndicatorTintColor
+        }
+        set(value) {
+            pageControl.pageIndicatorTintColor = value
         }
     }
 
