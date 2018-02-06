@@ -21,30 +21,37 @@ import UIKit
     /**
      Cancel image load on the image view
      - parameter imageView: Image view that is loading the image
-    */
+     */
     @objc optional func cancelLoad(on imageView: UIImageView)
+
+    var caption: String? { get }
 }
 
 /// Input Source to load plain UIImage
 @objcMembers
 open class ImageSource: NSObject, InputSource {
     var image: UIImage!
+    /// the caption for the image
+    public private(set) var caption: String?
 
     /// Initializes a new Image Source with UIImage
     /// - parameter image: Image to be loaded
-    public init(image: UIImage) {
+    /// - parameter caption: Caption for the image
+    public init(image: UIImage, caption: String? = nil) {
         self.image = image
+        self.caption = caption
     }
 
     /// Initializes a new Image Source with an image name from the main bundle
     /// - parameter imageString: name of the file in the application's main bundle
-    public init?(imageString: String) {
-        if let image = UIImage(named: imageString) {
-            self.image = image
-            super.init()
-        } else {
+    /// - parameter caption: Caption for the image
+    public init?(imageString: String, caption: String? = nil) {
+        guard let image = UIImage(named: imageString) else {
             return nil
         }
+        self.image = image
+        self.caption = caption
+        super.init()
     }
 
     public func load(to imageView: UIImageView, with callback: @escaping (UIImage?) -> Void) {

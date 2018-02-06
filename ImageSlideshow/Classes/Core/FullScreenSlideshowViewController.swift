@@ -18,9 +18,11 @@ open class FullScreenSlideshowViewController: UIViewController {
         // turns off the timer
         slideshow.slideshowInterval = 0
         slideshow.autoresizingMask = [UIViewAutoresizing.flexibleWidth, UIViewAutoresizing.flexibleHeight]
-
         return slideshow
     }()
+
+    /// Caption for the slideshow
+    let caption = UILabel()
 
     /// Close button 
     open var closeButton = UIButton()
@@ -44,6 +46,13 @@ open class FullScreenSlideshowViewController: UIViewController {
         }
     }
 
+    /// Enable/disable captions
+    open var captionsEnabled = true {
+        didSet {
+            caption.isHidden = !captionsEnabled
+        }
+    }
+
     fileprivate var isInit = true
 
     override open func viewDidLoad() {
@@ -62,6 +71,20 @@ open class FullScreenSlideshowViewController: UIViewController {
         closeButton.setImage(UIImage(named: "Frameworks/ImageSlideshow.framework/ImageSlideshow.bundle/ic_cross_white@2x"), for: UIControlState())
         closeButton.addTarget(self, action: #selector(FullScreenSlideshowViewController.close), for: UIControlEvents.touchUpInside)
         view.addSubview(closeButton)
+
+        caption.textColor = UIColor.white
+        caption.isHidden = !captionsEnabled
+        caption.text = inputs?[slideshow.currentPage].caption
+        view.addSubview(caption)
+        caption.layer.masksToBounds = false
+        caption.layer.shadowColor = UIColor.black.cgColor
+        caption.layer.shadowOffset = CGSize(width: 2, height: 2)
+        caption.layer.shadowOpacity = 1.0
+        caption.layer.shadowRadius = 3.0
+
+        slideshow.currentPageChanged = { page in
+            self.caption.text = self.inputs?[page].caption
+        }
     }
 
     override open var prefersStatusBarHidden: Bool {
@@ -91,8 +114,9 @@ open class FullScreenSlideshowViewController: UIViewController {
             } else {
                 safeAreaInsets = UIEdgeInsets.zero
             }
-            
+
             closeButton.frame = CGRect(x: max(10, safeAreaInsets.left), y: max(10, safeAreaInsets.top), width: 40, height: 40)
+            caption.frame = CGRect(x: closeButton.frame.origin.x + 50, y: max(10, safeAreaInsets.top), width: self.view.frame.width - (closeButton.frame.origin.x + 50 + max(10, safeAreaInsets.right)), height: 40)
         }
 
         slideshow.frame = view.frame

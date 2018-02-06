@@ -10,6 +10,8 @@ import Kingfisher
 
 /// Input Source to image using Kingfisher
 public class KingfisherSource: NSObject, InputSource {
+    /// the caption for the image
+    public private(set) var caption: String?
     /// url to load
     public var url: URL
 
@@ -23,10 +25,12 @@ public class KingfisherSource: NSObject, InputSource {
     /// - parameter url: a url to be loaded
     /// - parameter placeholder: a placeholder used before image is loaded
     /// - parameter options: options for displaying
-    public init(url: URL, placeholder: UIImage? = nil, options: KingfisherOptionsInfo? = nil) {
+    /// - parameter caption: Caption for the image
+    public init(url: URL, placeholder: UIImage? = nil, options: KingfisherOptionsInfo? = nil, caption: String? = nil) {
         self.url = url
         self.placeholder = placeholder
         self.options = options
+        self.caption = caption
         super.init()
     }
 
@@ -34,15 +38,16 @@ public class KingfisherSource: NSObject, InputSource {
     /// - parameter urlString: a string url to load
     /// - parameter placeholder: a placeholder used before image is loaded
     /// - parameter options: options for displaying
-    public init?(urlString: String, placeholder: UIImage? = nil, options: KingfisherOptionsInfo? = nil) {
-        if let validUrl = URL(string: urlString) {
-            self.url = validUrl
-            self.placeholder = placeholder
-            self.options = options
-            super.init()
-        } else {
+    /// - parameter caption: Caption for the image
+    public init?(urlString: String, placeholder: UIImage? = nil, options: KingfisherOptionsInfo? = nil, caption: String? = nil) {
+        guard let validUrl = URL(string: urlString) else {
             return nil
         }
+        self.url = validUrl
+        self.placeholder = placeholder
+        self.options = options
+        self.caption = caption
+        super.init()
     }
 
     @objc public func load(to imageView: UIImageView, with callback: @escaping (UIImage?) -> Void) {
