@@ -27,6 +27,9 @@ open class FullScreenSlideshowViewController: UIViewController {
     /// Close button 
     open var closeButton = UIButton()
 
+    /// Close button frame
+    open var closeButtonFrame: CGRect?
+
     /// Closure called on page selection
     open var pageSelected: ((_ page: Int) -> Void)?
 
@@ -114,9 +117,8 @@ open class FullScreenSlideshowViewController: UIViewController {
             } else {
                 safeAreaInsets = UIEdgeInsets.zero
             }
-
-            closeButton.frame = CGRect(x: max(10, safeAreaInsets.left), y: max(10, safeAreaInsets.top), width: 40, height: 40)
-            caption.frame = CGRect(x: closeButton.frame.origin.x + 50, y: max(10, safeAreaInsets.top), width: self.view.frame.width - (closeButton.frame.origin.x + 50 + max(10, safeAreaInsets.right)), height: 40)
+            
+            closeButton.frame = closeButtonFrame ?? CGRect(x: max(10, safeAreaInsets.left), y: max(10, safeAreaInsets.top), width: 40, height: 40)
         }
 
         slideshow.frame = view.frame
