@@ -82,7 +82,7 @@ import UIKit
             let requiredWidth = _pageControl.size(forNumberOfPages: numberOfPages).width
             if (superviewWidth - 16) < requiredWidth {
                 let xRange = Double((superviewWidth - 16) - requiredWidth)
-                let x = (Double(currentPage) / Double(numberOfPages - 1) * xRange) + 8
+                let x = (Double(currentPage) / max(1.0, Double(numberOfPages - 1)) * xRange) + 8
                 UIView.animate(withDuration: 0.125) {
                     self._pageControl.frame = CGRect(x: CGFloat(x), y: self._pageControl.frame.origin.y, width: requiredWidth, height: self.frame.height)
                 }
